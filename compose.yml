@@ -1,0 +1,36 @@
+services:
+  frontend-next-auth:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: frontend-next-auth
+    tty: true
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - next-auth-db
+  next-auth-db:
+    image: postgres:14
+    container_name: next-auth-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: next-auth
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  prisma-studio-next-auth:
+    image: timothyjmiller/prisma-studio
+    container_name: prisma-studio-next-auth
+    ports:
+      - 5555:5555
+    env_file:
+      - .env
+    depends_on:
+      - next-auth-db
+volumes:
+  postgres_data:
+
