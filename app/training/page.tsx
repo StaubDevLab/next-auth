@@ -1,4 +1,4 @@
-import { getTrainings } from '@/lib/actions';
+import { getTrainings } from '@/actions/trainings-actions';
 
 export default async function TrainingPage() {
     const trainingSessions = await getTrainings();
