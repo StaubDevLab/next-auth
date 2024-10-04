@@ -1,10 +1,11 @@
 'use server'
 import {PrismaClient} from '@prisma/client'
-import {Training} from "@/@types/Training";
+import {TrainingEntity} from "@/entities/training.entity";
 
 const prisma = new PrismaClient()
 
-export const getTrainings = async () : Promise<Training[]> => {
-    return prisma.training.findMany();
+export const getTrainings = async () : Promise<TrainingEntity[]> => {
+    const trainings = await prisma.training.findMany();
+    return trainings.map((training => new TrainingEntity(training)))
 
 }
